@@ -19,18 +19,16 @@ public class MathController {
 	
 	private final AtomicLong counter = new AtomicLong();
 	
+	SimpleCalculator calculator = new SimpleCalculator();
+	
 	@RequestMapping(value = "/sun/{numberone}/{numbertwo}", method = RequestMethod.GET)
 	public Double sum(
 			@PathVariable (value = "numberone")String numberone , 
 			@PathVariable(value = "numbertwo")String numbertwo) throws NumberFormatException {
 		
-		if(!isNumber(numberone) || !isNumber(numbertwo)) {
-			
-			throw new UnsupportedMathOperationException("Please set a numeric Value.");
-		}
+		checkNumericInputs(numberone, numbertwo);
 		
-		
-		return convertToDouble (numberone) + convertToDouble(numbertwo);
+		return calculator.sum(NumberConverter.convertToDouble(numberone), NumberConverter.convertToDouble(numbertwo));
 		
 	}
 	
@@ -38,26 +36,20 @@ public class MathController {
 	public Double sub (@PathVariable(value = "numberone") String numberone, 
 			@PathVariable(value = "numbertwo")String numbertwo) {
 		
-		if(!isNumber(numberone) || !isNumber(numbertwo)) {
-			
-			throw new UnsupportedMathOperationException("Please set a numeric Value.");
-		}
+		checkNumericInputs(numberone, numbertwo);
 		
+		return calculator.sub(NumberConverter.convertToDouble(numberone), NumberConverter.convertToDouble(numbertwo));
 		
-		return convertToDouble(numberone)- convertToDouble(numbertwo);
 		
 	}
 	@RequestMapping(value = "multi/{numberone}/{numbertwo}", method = RequestMethod.GET)
 	public Double multi (@PathVariable(value = "numberone") String numberone, 
 			@PathVariable(value = "numbertwo")String numbertwo) {
 		
-		if(!isNumber(numberone) || !isNumber(numbertwo)) {
-			
-			throw new UnsupportedMathOperationException("Please set a numeric Value.");
-		}
+		checkNumericInputs(numberone, numbertwo);
 		
+		return calculator.multi(NumberConverter.convertToDouble(numberone), NumberConverter.convertToDouble(numbertwo));
 		
-		return convertToDouble(numberone)* convertToDouble(numbertwo);
 		
 	}
 	
@@ -65,60 +57,54 @@ public class MathController {
 	public Double div (@PathVariable(value = "numberone") String numberone, 
 			@PathVariable(value = "numbertwo")String numbertwo) {
 		
-		if(!isNumber(numberone) || !isNumber(numbertwo)) {
+		checkNumericInputs(numberone, numbertwo);
+		
+		if (NumberConverter.convertToDouble(numbertwo) == 0) {
 			
-			throw new UnsupportedMathOperationException("Please set a numeric Value.");
-		}
-		else if(convertToDouble(numberone)== 0 || convertToDouble(numbertwo)== 0) {
-			
-			throw new UnsupportedMathOperationException("The numbers should different zero. ");
-		}
+            throw new UnsupportedMathOperationException("The divisor should be different from zero.");
+        }
+		
+		return calculator.div(NumberConverter.convertToDouble(numberone), NumberConverter.convertToDouble(numbertwo));
 		
 		
-		return convertToDouble(numberone)/ convertToDouble(numbertwo);
 		
 	}
 	@RequestMapping(value = "media/{numberone}/{numbertwo}", method = RequestMethod.GET)
 	public Double media (@PathVariable(value = "numberone") String numberone, 
 			@PathVariable(value = "numbertwo")String numbertwo) {
 		
-		if(!isNumber(numberone) || !isNumber(numbertwo)) {
-			
-			throw new UnsupportedMathOperationException("Please set a numeric Value.");
-		}
+		checkNumericInputs(numberone, numbertwo);
 		
+		return calculator.media(NumberConverter.convertToDouble(numberone), NumberConverter.convertToDouble(numbertwo));
 		
-		return (convertToDouble(numberone)+ convertToDouble(numbertwo))/2;
 		
 	}
 	
 	@RequestMapping(value = "raiz/{numberone}", method = RequestMethod.GET)
 	public Double raiz (@PathVariable(value = "numberone") String numberone) {
 		
-		if(!isNumber(numberone)) {
+		checkNumericInputs(numberone);
+		
+		return calculator.raiz(NumberConverter.convertToDouble(numberone));
+		
+		
+	}
+	
+	private void checkNumericInputs(String numberone, String numbertwo) {
+
+		if(!NumberConverter.isNumber(numberone) || !NumberConverter.isNumber(numbertwo)) {
 			
 			throw new UnsupportedMathOperationException("Please set a numeric Value.");
 		}
 		
-		return Math.sqrt(convertToDouble(numberone)) ;
-		
-	}
-	
-	
+    }
 
-	private double convertToDouble(String str) {
-		if(str == null)return 0D;
-		String number = str.replaceAll(",", ".");
-		if(isNumber(number))return Double.parseDouble(number);
-		return 0D;
-	}
+    private void checkNumericInputs(String number) {
+    	
+        if (!NumberConverter.isNumber(number)) {
+            throw new UnsupportedMathOperationException("Please set a numeric value.");
+        }
+    }
 
-	private boolean isNumber(String str) {
-		if(str == null)return false;
-		String number = str.replaceAll(",", ".");
-		
-	  return  number.matches("-?\\d+(\\.\\d+)?");
-	  
-	}
 
 }
