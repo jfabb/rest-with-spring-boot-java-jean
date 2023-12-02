@@ -3,7 +3,6 @@ package br.com.jean.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
