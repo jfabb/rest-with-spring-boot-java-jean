@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.jean.model.Person;
+import br.com.jean.data.vo.v1.PersonVO;
 import br.com.jean.services.PersonServices;
 
 @RestController
@@ -25,7 +25,7 @@ public class PersonController {
 	private PersonServices service;
 
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Person findById(@PathVariable (value = "id")Long id) throws NumberFormatException {
+	public PersonVO findById(@PathVariable (value = "id")Long id) throws NumberFormatException {
 		
 
      return service.findById(id);
@@ -41,14 +41,14 @@ public class PersonController {
 	}
 	
 	@PostMapping( consumes =  MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Person create(@RequestBody Person person)  {
+	public PersonVO create(@RequestBody PersonVO person)  {
 		
 		return service.createPerson(person);
 		
 	}
 	
 	@PutMapping( consumes =  MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Person update(@RequestBody Person person)  {
+	public br.com.jean.data.vo.v1.PersonVO update(@RequestBody PersonVO person)  {
 		
 		return service.updatePerson(person);
 		
@@ -56,7 +56,7 @@ public class PersonController {
 	
 	
 	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Person> findById()  {
+	public List<PersonVO> findById()  {
 		
 		return service.finAll();
 		
