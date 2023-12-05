@@ -24,7 +24,7 @@ public class PersonController {
 	@Autowired
 	private PersonServices service;
 
-	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE,"application/x-yaml"})
 	public PersonVO findById(@PathVariable (value = "id")Long id) throws NumberFormatException {
 		
 
@@ -40,14 +40,14 @@ public class PersonController {
 		
 	}
 	
-	@PostMapping( consumes =  MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping( consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE,"application/x-yaml"}, produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE,"application/x-yaml"})
 	public PersonVO create(@RequestBody PersonVO person)  {
 		
 		return service.createPerson(person);
 		
 	}
 	
-	@PutMapping( consumes =  MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping( consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE,"application/x-yaml"}, produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE,"application/x-yaml"})
 	public br.com.jean.data.vo.v1.PersonVO update(@RequestBody PersonVO person)  {
 		
 		return service.updatePerson(person);
@@ -55,8 +55,8 @@ public class PersonController {
 	}
 	
 	
-	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<PersonVO> findById()  {
+	@GetMapping( produces = {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE,"application/x-yaml"})
+	public List<PersonVO> findAll()  {
 		
 		return service.finAll();
 		
